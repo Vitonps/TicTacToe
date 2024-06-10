@@ -92,19 +92,18 @@ public class Cliente {
                         enviar = cliente.scanner.nextLine();
                     }
                 }
-
                 cliente.enviarJogada(enviar);
 
                 resposta = (String) cliente.receberMensagem();
                 System.out.println(resposta);
 
-                if (enviar.equals("exit")) {
+                if (resposta.equals("O outro jogador saiu do jogo ):, fechando o sistema")) {
                     cliente.fecharConexao();
                     break;
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace(); Omitido para nao mostrar erro ao jogador se desconectar
         } finally {
             scanner.close();
         }
