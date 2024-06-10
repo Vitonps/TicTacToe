@@ -1,7 +1,7 @@
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -35,7 +35,15 @@ public class Servidor {
 
     // Metodo para iniciar o socket do jogador e o StreamHelper
     public void start() {
-        System.out.println("Servidor iniciado e aguardando conexões...");
+        try {
+            // Obtém o endereço IP local
+            InetAddress ipLocal = InetAddress.getLocalHost();
+            System.out.println("Servidor iniciado no IP: " + ipLocal.getHostAddress() + " na porta: " + serverSocket.getLocalPort() + " e aguardando conexões...");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
         while (true) {
             try {
                 Socket jogadorSocket = serverSocket.accept();
@@ -221,12 +229,12 @@ public class Servidor {
             return nome;
         }
 
-        // Retorna a entrada do jogador
+        // Retorna entrada
         public ObjectInputStream getEntrada() {
             return entrada;
         }
 
-        // Retorna a saida do jogador
+        // Retorna saida
         public ObjectOutputStream getSaida() {
             return saida;
         }
@@ -347,4 +355,3 @@ public class Servidor {
         }
     }
 }
-
