@@ -3,25 +3,25 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
-//Classe cliente
+
 public class Cliente {
     private final Socket socket;
     private final ObjectOutputStream saida;
     private final ObjectInputStream entrada;
     private final Scanner scanner;
-    //Construtor do cliente
+
     public Cliente(String serverAddress, int serverPort) throws IOException {
         this.socket = new Socket(serverAddress, serverPort);
         this.saida = new ObjectOutputStream(socket.getOutputStream());
         this.entrada = new ObjectInputStream(socket.getInputStream());
         this.scanner = new Scanner(System.in);
     }
-    
+
     public void enviarNome(String nome) throws IOException {
         saida.writeObject(nome);
         saida.flush();
     }
-    
+
     public void enviarEscolhaModo(String modo) throws IOException {
         saida.writeObject(modo);
         saida.flush();
@@ -49,7 +49,7 @@ public class Cliente {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        //Inicio no servidor
+        
         try {
             System.out.print("Digite o endereço do servidor: ");
             String serverAddress = scanner.nextLine();
@@ -75,7 +75,7 @@ public class Cliente {
             if(modo.equals("1")){
                 System.out.println("Aguardando segundo jogador..");
             }
-            //Escolhas ja dentro do jogo
+
             while (true) {
                 resposta = (String) cliente.receberMensagem();
                 System.out.println(resposta);
@@ -108,7 +108,7 @@ public class Cliente {
             scanner.close();
         }
     }
-    //Checar se a jogada e valida
+
     private static boolean isValidMove(String jogada) {
         return jogada.equalsIgnoreCase("pedra") ||
                 jogada.equalsIgnoreCase("papel") ||
