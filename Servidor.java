@@ -273,8 +273,31 @@ public class Servidor {
 
     // Classe do jogo contra IA
     private static class JogadorIA extends Jogador implements Runnable {
+        private int vitoriasIA;
+        private int derrotasIA;
+        private int empatesIA;
+        //Contador vitoria IA
+        public void setVitoriasIA() {
+            this.vitoriasIA++;
+        }
+        //Contador derrota IA
+        public void setDerrotasIA() {
+            this.derrotasIA++;
+        }
+        //Contador empate IA
+        public void setEmpatesIA() {
+            this.empatesIA++;
+        }
+        //Metodo para retornar o placar da IA
+        public String getResultadoIA() {
+            return "IA - Vitórias: " + vitoriasIA + " Derrotas: " + derrotasIA + " Empates: " + empatesIA;
+        }
+
         public JogadorIA(Socket socket, String nome, ObjectInputStream entrada, ObjectOutputStream saida) {
             super(socket, nome, entrada, saida);
+            this.vitoriasIA = 0;
+            this.derrotasIA = 0;
+            this.empatesIA = 0;
         }
 
         // Metodo para rodar o jogo contra IA
@@ -320,19 +343,23 @@ public class Servidor {
 
             if (jogadaJogador.equals(jogadaIA)) {
                 resumo = "Empate!";
+                setEmpatesIA();
                 setEmpate();
             } else if ((jogadaJogador.equals("pedra") && jogadaIA.equals("tesoura")) ||
                     (jogadaJogador.equals("papel") && jogadaIA.equals("pedra")) ||
                     (jogadaJogador.equals("tesoura") && jogadaIA.equals("papel"))) {
-                setVitoria();
-                resumo = getNome() + " venceu!";
+
+                    resumo = getNome() + " venceu!";
+                    setDerrotasIA();
+                    setVitoria();
             } else {
-                setDerrota();
                 resumo = "IA venceu!";
+                setVitoriasIA();
+                setDerrota();
             }
 
             return getNome() + " escolheu " + jogadaJogador + "\n" + "IA escolheu " + jogadaIA + "\n" + resumo +
-                    "\nPlacar:\n" + getNome() + ": " + getResultado();
+                    "\nPlacar:\n" + getNome() + ": " + getResultado() + "\n" + getResultadoIA();
         }
     }
 
